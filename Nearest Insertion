@@ -1,0 +1,87 @@
+import pandas as pd
+import sys
+
+def main():
+    dist_csv = pd.read_csv("Pairwise Distances.csv")
+
+    distances = dist_csv.iloc[:,1:]
+    distances.index = dist_csv.iloc[:,0].values
+
+    def neighbour(v,i):
+        return current_neighbours[v][i]
+
+    def d(u, v):
+        return distances.loc[u,v]
+
+    start_vertices = ["The Courts", "Strathcona"]
+    start_neighbours = {
+        start_vertices[0] : [[start_vertices[1],d(start_vertices[0],start_vertices[1])]],
+        start_vertices[1] : [[start_vertices[0],d(start_vertices[0],start_vertices[1])]]
+    }
+
+    distances = distances.drop(index = start_vertices)
+
+    current_vertices = start_vertices
+    current_neighbours = start_neighbours
+
+    while distances.index.empty != True:
+
+        nearest_neighbour = distances[current_vertices].min(axis=1).idxmin()
+        nearest_vertex = distances.loc[nearest_neighbour]
+        nearest_vertex = nearest_vertex.loc[current_vertices].idxmin()
+
+        d_nn = d(nearest_neighbour, nearest_vertex)
+
+        if len(current_neighbours[neighbour(nearest_vertex,0)[0]]) < 2:
+
+            current_neighbours[nearest_vertex].append([nearest_neighbour, d_nn])
+            current_neighbours[neighbour(nearest_vertex,0)[0]].append([nearest_neighbour, d(nearest_neighbour, neighbour(nearest_vertex,0)[0])])
+            current_neighbours[nearest_neighbour] = [[nearest_vertex, d_nn], [neighbour(nearest_vertex,0)[0], d(nearest_neighbour, neighbour(nearest_vertex,0)[0])]]
+
+        elif (d(nearest_neighbour, neighbour(nearest_vertex,0)[0]) - neighbour(nearest_vertex,0)[1] <= 
+        d(nearest_neighbour, neighbour(nearest_vertex,1)[0]) - neighbour(nearest_vertex,1)[1]):
+
+            current_neighbours[nearest_neighbour] = [[nearest_vertex, d_nn], [neighbour(nearest_vertex,0)[0], d(nearest_neighbour, neighbour(nearest_vertex,0)[0])]]
+
+            if current_neighbours[neighbour(nearest_vertex,0)[0]][0][0] == nearest_vertex:
+                current_neighbours[neighbour(nearest_vertex,0)[0]][0] = [nearest_neighbour, d(nearest_neighbour, neighbour(nearest_vertex,0)[0])]
+            else:
+                current_neighbours[neighbour(nearest_vertex,0)[0]][1] = [nearest_neighbour, d(nearest_neighbour, neighbour(nearest_vertex,0)[0])]
+
+            current_neighbours[nearest_vertex][0] = [nearest_neighbour, d_nn]
+
+        else:
+
+            current_neighbours[nearest_neighbour] = [[nearest_vertex, d_nn], [neighbour(nearest_vertex,1)[0], d(nearest_neighbour, neighbour(nearest_vertex,1)[0])]]
+
+            if current_neighbours[neighbour(nearest_vertex,1)[0]][0][0] == nearest_vertex:
+                current_neighbours[neighbour(nearest_vertex,1)[0]][0] = [nearest_neighbour, d(nearest_neighbour, neighbour(nearest_vertex,1)[0])]
+            else:
+                current_neighbours[neighbour(nearest_vertex,1)[0]][1] = [nearest_neighbour, d(nearest_neighbour, neighbour(nearest_vertex,1)[0])]
+
+            current_neighbours[nearest_vertex][1] = [nearest_neighbour, d_nn]
+
+        current_vertices.append(nearest_neighbour)
+        distances = distances.drop(index = nearest_neighbour)
+
+    n=0
+    for i in current_vertices:
+        n += 1
+        print(str(n) + "; "+i+"; (" + current_neighbours[i][0][0] + ", " + current_neighbours[i][1][0] + ")")
+
+    for i in current_vertices:
+        print("")
+        for j in current_vertices:
+            if current_neighbours[i][0][0] == j or current_neighbours[i][1][0] == j:
+                aij = 1
+            else:
+                aij = 0
+
+            print(aij, end = " ")
+
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+
