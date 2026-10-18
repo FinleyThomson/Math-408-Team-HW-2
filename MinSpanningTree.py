@@ -29,5 +29,6 @@ def GetMinSpanningTree(dists):
 
         E_MST.append(best_edge)     #(vertex, vertex, weight)
         
+    
 
     return E_MST

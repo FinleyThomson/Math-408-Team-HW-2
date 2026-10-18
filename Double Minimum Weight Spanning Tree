@@ -18,6 +18,15 @@ def main():
         Adj[u].append(v) #dont bother with other direction for the tree traversal, 
                          #the mst algo i wrote only returns (parent,child) 
 
+    V = dists.index.tolist()
+    ordV = len(V)
+
+    print("======================================================")
+    print("Min Spanning Tree: ")
+    for i in range(ordV):
+        print(f"{V[i]}; {Adj[V[i]]}")
+    print("======================================================")
+
     def getChild(v):
         if len(Adj[v]) == 0:
             return None
