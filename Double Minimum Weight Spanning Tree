@@ -32,8 +32,12 @@ def main():
             pre_order(child)
 
     pre_order(v_start)
+    tour.append(v_start) #just to close the cycle
 
-    print(tour)
+    n = len(tour)
+
+    for i in range(n):
+        print(tour[i]+",")
 
 if __name__ == "__main__":
     sys.exit(main())
