@@ -24,6 +24,8 @@ def main():
     current_vertices = start_vertices
     current_neighbours = start_neighbours
 
+    cycles = [current_vertices]
+
     while distances.index.empty != True:
 
         nearest_neighbour = distances[current_vertices].min(axis=1).idxmin()
@@ -63,6 +65,7 @@ def main():
 
         current_vertices.append(nearest_neighbour)
         distances = distances.drop(index = nearest_neighbour)
+        cycles.append(current_vertices)
 
     n=0
     for i in current_vertices:
@@ -78,6 +81,14 @@ def main():
                 aij = 0
 
             print(aij, end = " ")
+
+    n = 1
+    for i in cycles:
+        print ("Cycle " + str(n) + ";", end="")
+        for j in range(n):
+            print(i[j] + ", ", end ="")
+        n+=1
+
 
 
 
