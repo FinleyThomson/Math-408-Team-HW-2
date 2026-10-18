@@ -20,7 +20,7 @@ def GetMinSpanningTree(dists):
         best_edge = ()
 
         neighbour = G[V_visited].min(axis=1).idxmin()
-        nearest_vertex = G.loc[neighbour, V_visited]
+        nearest_vertex = G.loc[neighbour, V_visited].idxmin()
         best_edge = (nearest_vertex, neighbour, d(nearest_vertex, neighbour))
             
         V_visited.append(neighbour)

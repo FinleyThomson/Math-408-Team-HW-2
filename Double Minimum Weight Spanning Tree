@@ -1,20 +1,41 @@
 import pandas as pd
-from collections import deque
-import GetMinSpanningTree
+from collections import defaultdict
+from MinSpanningTree import GetMinSpanningTree
+import sys
 
-dists = pd.read_csv("Pairwise_Distances.csv")
-dists.set_index(dists.columns[0], inplace = True)
+def main():
+    dists = pd.read_csv("Pairwise Distances.csv")
+    dists.set_index(dists.columns[0], inplace = True)
 
-E_MST = GetMinSpanningTree(dists)
+    E_MST = GetMinSpanningTree(dists)
 
-tour = []
+    tour = []
 
-v_current = v_start
+    v_start = "The Courts"
 
-Adj = {}
+    Adj = defaultdict(list)
+    for u, v, w in E_MST:
+        Adj[u].append(v)
 
-for i in range(orderV):
+    def getChild(v):
+        if len(Adj[v]) == 0:
+            return None
+        else:
+            return dists.loc[Adj[v], v].idxmin()
 
+    def pre_order(root):
+        tour.append(root)
+        while Adj[root]:
+            child = getChild(root)
+            Adj[root].remove(child)
+            pre_order(child)
+
+    pre_order(v_start)
+
+    print(tour)
+
+if __name__ == "__main__":
+    sys.exit(main())
 
     
 
