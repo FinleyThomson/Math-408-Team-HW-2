@@ -7,7 +7,7 @@ def main():
     dists = pd.read_csv("Pairwise Distances.csv")
     dists.set_index(dists.columns[0], inplace = True)
 
-    E_MST = GetMinSpanningTree(dists)
+    E_MST = GetMinSpanningTree(dists) #using the mst from the MinSpanningTree.py
 
     tour = []
 
@@ -15,17 +15,18 @@ def main():
 
     Adj = defaultdict(list)
     for u, v, w in E_MST:
-        Adj[u].append(v)
+        Adj[u].append(v) #dont bother with other direction for the tree traversal, 
+                         #the mst algo i wrote only returns (parent,child) 
 
     def getChild(v):
         if len(Adj[v]) == 0:
             return None
         else:
-            return dists.loc[Adj[v], v].idxmin()
+            return dists.loc[Adj[v], v].idxmin() #find the closest child to expand first, idk if this is necessary 
 
-    def pre_order(root):
+    def pre_order(root): #normal preorder traversal of the tree
         tour.append(root)
-        while Adj[root]:
+        while Adj[root]: 
             child = getChild(root)
             Adj[root].remove(child)
             pre_order(child)
