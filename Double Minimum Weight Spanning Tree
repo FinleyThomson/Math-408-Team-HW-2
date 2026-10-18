@@ -7,7 +7,7 @@ def main():
     dists = pd.read_csv("Pairwise Distances.csv")
     dists.set_index(dists.columns[0], inplace = True)
 
-    E_MST = GetMinSpanningTree(dists)                                                       #using the mst from the MinSpanningTree.py
+    E_MST = GetMinSpanningTree(dists)    #using the mst from the MinSpanningTree.py
 
     tour = []
 
@@ -15,36 +15,27 @@ def main():
 
     Adj = defaultdict(list)
     for u, v, w in E_MST:
-        Adj[u].append(v)                                                                            #dont bother with other direction for the tree traversal, the mst algo i wrote only returns (parent,child)
+        Adj[u].append(v)     #dont bother with other direction for the tree traversal, the mst algo i wrote only returns (parent,child)
                           
-
-
-    V = dists.index.tolist()
-    ordV = len(V)
 
     def getChild(v):
         if len(Adj[v]) == 0:
             return None
         else:
-            return dists.loc[Adj[v], v].idxmin()                                            #find the closest child to expand first, idk if this is necessary 
+            return dists.loc[Adj[v], v].idxmin()  #find the closest child to expand first, idk if this is necessary 
 
-    def pre_order(root):                                                                        #normal preorder traversal of the tree
+    def pre_order(root):     #normal preorder traversal of the tree, tho here we expand first on nodes with least distance
         tour.append(root)
-        # print(root + ": , ", end="")
-        # for r in Adj[root]:
-        #     print(r + ", ", end="")
-        for r in Adj[root]:
-            print(str(dists.loc[r, root]) + ", ", end="")
-        print("")
         while Adj[root]: 
             child = getChild(root)
             Adj[root].remove(child)
             pre_order(child)
 
     pre_order(v_start)
-    tour.append(v_start)                                                            #just to close the cycle
+    tour.append(v_start)      #just to close the cycle
 
-    n = len(tour)
+    print(tour)
+
 
 
 if __name__ == "__main__":

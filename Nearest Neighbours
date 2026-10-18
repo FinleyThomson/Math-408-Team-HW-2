@@ -12,28 +12,16 @@ def main():
     distances = distances.drop(index = start)
 
     tour = [start]
-    nn = []
-    d = []
-
 
     current_node = start
 
     while distances.index.empty != True:
 
         nearest_neighbour = distances[current_node].idxmin()
-        nn.append(nearest_neighbour)
-        d.append(distances.loc[nearest_neighbour, current_node])
         distances = distances.drop(index = nearest_neighbour)
         tour.append(nearest_neighbour)
         current_node = nearest_neighbour
 
-    nn.append(nearest_neighbour)
-    #d.append(distances.loc[nearest_neighbour,current_node].value)
-
-    for i in range(len(tour)):
-        print( tour[i] + ", " + nn[i])
-    for i in range(len(d)):
-        print( str(d[i]))
     
 
 if __name__ == "__main__":

@@ -6,16 +6,16 @@ def GetMinSpanningTree(dists):
     def d(u, v):
         return dists.loc[u,v]
 
-    G = dists.copy(deep = True)                                                     # edges and weights are stored in dists as it essentially sserves as an adjacnecy matrix 
+    G = dists.copy(deep = True)        # edges and weights are stored in dists as it essentially sserves as an adjacnecy matrix 
 
-    E_MST = []                                                                      #edge set for min spanning tree
+    E_MST = []          #edge set for min spanning tree
 
-    v_start = "The Courts"                                                          #arbirtrary, its just the on I used for the other two methods
+    v_start = "The Courts"      #arbirtrary, its just the on I used for the other two methods
 
     V_visited = [v_start]
     G = G.drop(index = v_start)
 
-    while G.index.empty != True:                                                            #creating MST
+    while G.index.empty != True:       #creating MST
 
         best_edge = ()
 
@@ -27,7 +27,7 @@ def GetMinSpanningTree(dists):
 
         G = G.drop(index = neighbour)
 
-        E_MST.append(best_edge)                                                                     #(vertex, vertex, weight)
+        E_MST.append(best_edge)      #(vertex, vertex, weight)
         
     
 
