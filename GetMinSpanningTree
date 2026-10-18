@@ -1,0 +1,33 @@
+import pandas as pd
+
+
+def GetMinSpanningTree(dists):
+    
+    def d(u, v):
+        return dists.loc[u,v]
+
+    G = dists.copy(deep = True) # edges and weights are stored in dists as it essentially sserves as an adjacnecy matrix 
+
+    E_MST = [] #edge set for min spanning tree
+
+    v_start = "The Courts" #arbirtrary, its just the on I used for the other two methods
+
+    V_visited = [v_start]
+    G = G.drop(index = v_start)
+
+    while G.index.empty != True: #creating MST
+
+        best_edge = ()
+
+        neighbour = G[V_visited].min(axis=1).idxmin()
+        nearest_vertex = G.loc[neighbour, V_visited]
+        best_edge = (nearest_vertex, neighbour, d(nearest_vertex, neighbour))
+            
+        V_visited.append(neighbour)
+
+        G = G.drop(index = neighbour)
+
+        E_MST.append(best_edge)     #(vertex, vertex, weight)
+        
+
+    return E_MST

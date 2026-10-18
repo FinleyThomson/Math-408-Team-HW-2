@@ -1,0 +1,31 @@
+import pandas as pd
+from collections import deque
+import GetMinSpanningTree
+
+dists = pd.read_csv("Pairwise_Distances.csv")
+dists.set_index(dists.columns[0], inplace = True)
+
+E_MST = GetMinSpanningTree(dists)
+
+tour = []
+
+v_current = v_start
+
+Adj = {}
+
+for i in range(orderV):
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
